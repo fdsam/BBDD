@@ -1,0 +1,891 @@
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CAR IN (SELECT CAR FROM AREA WHERE AR LIKE 'A%');
+
+A                                                                               
+--------------------------------------------------                              
+ALGEBRA                                                                         
+ANALISIS COMPLEJO                                                               
+ASTRONOMIA                                                                      
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CAR IN (SELECT CAR FROM AREA WHERE AR LIKE '%A');
+
+A                                                                               
+--------------------------------------------------                              
+ALGEBRA                                                                         
+ASTRONOMIA                                                                      
+ENSENANZA DE LA MATEMATICA                                                      
+OPTIMIZACION                                                                    
+CALCULO                                                                         
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE A LIKE 'DATOS'
+  3  ;
+
+no rows selected
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE A LIKE '%DATOS%'
+  3  ;
+
+A                                                                               
+--------------------------------------------------                              
+BASES DE DATOS                                                                  
+ALMACENES DE DATOS                                                              
+MINERIA DE DATOS                                                                
+
+SQL> SELECT DNI FROM PROFESOR
+  2  WHERE P LIKE '__R%';
+
+       DNI                                                                      
+----------                                                                      
+      2222                                                                      
+      4444                                                                      
+      6666                                                                      
+      7777                                                                      
+
+SQL> SELECT DNI FROM PROFESOR
+  2  WHERE LENGTH P <='5';
+WHERE LENGTH P <='5'
+             *
+ERROR at line 2:
+ORA-00920: invalid relational operator 
+
+
+SQL> SELECT DISTINC  DNI FROM PROFESOR
+  2  WHERE LENGTH (P) <='5';
+SELECT DISTINC  DNI FROM PROFESOR
+       *
+ERROR at line 1:
+ORA-00904: "DISTINC": invalid identifier 
+
+
+SQL> SELECT DISTINCT DNI FROM PROFESOR
+  2  WHERE LENGTH (P) <='5';
+
+       DNI                                                                      
+----------                                                                      
+      1111                                                                      
+      3333                                                                      
+      4444                                                                      
+      5555                                                                      
+      7777                                                                      
+      1010                                                                      
+
+6 rows selected.
+
+SQL> SELECT DISTINCT DNI FROM PROFESOR
+  2  WHERE LENGTH (P) > '5';
+
+       DNI                                                                      
+----------                                                                      
+      2222                                                                      
+      6666                                                                      
+      8888                                                                      
+      9999                                                                      
+      2020                                                                      
+      3030                                                                      
+
+6 rows selected.
+
+SQL> SELECT P FROM PROFESOR
+  2  WHERE DNI IN
+  3  (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL);
+
+P                                                                               
+------------------------------------------------------------                    
+DAVID                                                                           
+JUAN                                                                            
+SOLEDAD                                                                         
+CARLOS                                                                          
+JOSE MANUEL                                                                     
+PEDRO                                                                           
+MARIA                                                                           
+IVAN                                                                            
+MARIO                                                                           
+FRANCISCO                                                                       
+ANGELA                                                                          
+
+11 rows selected.
+
+SQL> SELECT P FROM PROFESOR
+  2  WHERE DNI IN
+  3  (SELECT DNI FROM PLAN_DOCENTE WHERE CAS=8);
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+JOSE MANUEL                                                                     
+
+SQL> SELECT * FROM PLAN_DOCENTE ORDER BY FF;
+
+       DNI        CAS        CTA        CPA        CLA FI        FF             
+---------- ---------- ---------- ---------- ---------- --------- ---------      
+      2222          3        1.5          0        1.5 01-SEP-06 31-OCT-07      
+      1010          2        1.5        1.5          3 01-SEP-05 31-OCT-08      
+      1010          9          3          0          3 01-SEP-08 31-OCT-09      
+      1111          8          3        1.5        1.5 01-SEP-07 31-OCT-09      
+      4444          4        1.5          0        1.5 01-SEP-08 31-OCT-10      
+      6666         10          3        1.5        1.5 01-SEP-08 31-OCT-11      
+      1010          2          0          0        1.5 01-SEP-09                
+      9999          7          3          3          0 01-SEP-10                
+      5555          6          3          3          0 31-MAR-10                
+      8888         11          6          0          0 01-SEP-09                
+      2020          3        1.5          0        1.5 01-SEP-08                
+
+       DNI        CAS        CTA        CPA        CLA FI        FF             
+---------- ---------- ---------- ---------- ---------- --------- ---------      
+      7777         12        4.5          3          0 01-SEP-10                
+      3333          9        1.5          0        1.5 01-SEP-09                
+      2222          4        1.5          0        1.5 01-SEP-09                
+      3030          8          0        1.5        1.5 01-SEP-09                
+      1111          8          3          0          0 01-SEP-09                
+      4444          5          3          0          0 01-SEP-10                
+      4444          1          3        1.5        1.5 01-SEP-11                
+      3333          2        1.5        1.5          3 01-SEP-08                
+
+19 rows selected.
+
+SQL> SELECT * FROM PLAN_DOCENTE ORDER BY FF DESC;
+
+       DNI        CAS        CTA        CPA        CLA FI        FF             
+---------- ---------- ---------- ---------- ---------- --------- ---------      
+      4444          1          3        1.5        1.5 01-SEP-11                
+      3333          2        1.5        1.5          3 01-SEP-08                
+      7777         12        4.5          3          0 01-SEP-10                
+      2020          3        1.5          0        1.5 01-SEP-08                
+      8888         11          6          0          0 01-SEP-09                
+      5555          6          3          3          0 31-MAR-10                
+      9999          7          3          3          0 01-SEP-10                
+      4444          5          3          0          0 01-SEP-10                
+      1111          8          3          0          0 01-SEP-09                
+      3030          8          0        1.5        1.5 01-SEP-09                
+      2222          4        1.5          0        1.5 01-SEP-09                
+
+       DNI        CAS        CTA        CPA        CLA FI        FF             
+---------- ---------- ---------- ---------- ---------- --------- ---------      
+      3333          9        1.5          0        1.5 01-SEP-09                
+      1010          2          0          0        1.5 01-SEP-09                
+      6666         10          3        1.5        1.5 01-SEP-08 31-OCT-11      
+      4444          4        1.5          0        1.5 01-SEP-08 31-OCT-10      
+      1010          9          3          0          3 01-SEP-08 31-OCT-09      
+      1111          8          3        1.5        1.5 01-SEP-07 31-OCT-09      
+      1010          2        1.5        1.5          3 01-SEP-05 31-OCT-08      
+      2222          3        1.5          0        1.5 01-SEP-06 31-OCT-07      
+
+19 rows selected.
+
+SQL> SELECT P FROM PROFESOR
+  2  WHERE DNI IN
+  3  (SELECT DNI FROM PLAN_DOCENTE WHERE CAS=8) ORDER BY P;
+
+P                                                                               
+------------------------------------------------------------                    
+JOSE MANUEL                                                                     
+JUAN                                                                            
+
+SQL> SELECT P FROM PROFESOR
+  2  WHERE CAR IN
+  3  (SELECT CAR FROM AREA WHERE );
+(SELECT CAR FROM AREA WHERE )
+                            *
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> SELECT P FROM PROFESOR
+  2  WHERE CAR IN
+  3  (SELECT CAR FROM AREA WHERE CD=4)
+  4  ORDER BY P DESC;
+
+P                                                                               
+------------------------------------------------------------                    
+IVAN                                                                            
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CAS IN
+  3  (SELECT CAS FROM PLAN_DOCENTE WHERE DNI=1010);
+
+A                                                                               
+--------------------------------------------------                              
+INTELIGENCIA ARTIFICIAL                                                         
+GESTION DE RIESGOS                                                              
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CAS IN
+  3  (SELECT CAS FROM PLAN_DONCETE WHERE DNI IN (SELECT DNI FROM PROFESOR WHERE P='DAVID'));
+(SELECT CAS FROM PLAN_DONCETE WHERE DNI IN (SELECT DNI FROM PROFESOR WHERE P='DAVID'))
+                 *
+ERROR at line 3:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CAS IN
+  3  ;
+
+*
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> SLECT * FROM PROFESOR
+SP2-0734: unknown command beginning "SLECT * FR..." - rest of line ignored.
+SQL> SELECT * FROM PROFESOR
+  2  ;
+
+       DNI P                                                                    
+---------- ------------------------------------------------------------         
+       CAR CAT                                                                  
+---------- -----                                                                
+      1111 JUAN                                                                 
+         6 CU                                                                   
+                                                                                
+      2222 CARLOS                                                               
+         7 TU                                                                   
+                                                                                
+      3333 PEDRO                                                                
+         4 TEU                                                                  
+                                                                                
+
+       DNI P                                                                    
+---------- ------------------------------------------------------------         
+       CAR CAT                                                                  
+---------- -----                                                                
+      4444 MARIA                                                                
+         7 TU                                                                   
+                                                                                
+      5555 IVAN                                                                 
+         1 CEU                                                                  
+                                                                                
+      6666 CARMEN                                                               
+         3 CD                                                                   
+                                                                                
+
+       DNI P                                                                    
+---------- ------------------------------------------------------------         
+       CAR CAT                                                                  
+---------- -----                                                                
+      7777 MARIO                                                                
+         2 TU                                                                   
+                                                                                
+      8888 FRANCISCO                                                            
+         5 TU                                                                   
+                                                                                
+      9999 ANGELA                                                               
+         8 TEU                                                                  
+                                                                                
+
+       DNI P                                                                    
+---------- ------------------------------------------------------------         
+       CAR CAT                                                                  
+---------- -----                                                                
+      1010 DAVID                                                                
+         4 TU                                                                   
+                                                                                
+      2020 SOLEDAD                                                              
+         7 CU                                                                   
+                                                                                
+      3030 JOSE MANUEL                                                          
+         6 TEU                                                                  
+                                                                                
+
+12 rows selected.
+
+SQL> SELECT A FROM ASIGATURA WHERE CAS IN
+  2  (SELECT CAS FROM PLAN_DOCENTE WHERE DNI IN
+  3  (SELECT DNI FROM PROFESOR WHERE P='DAVID'));
+SELECT A FROM ASIGATURA WHERE CAS IN
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT * FROM ASIGNATURA;
+
+       CAS A                                                  T           CUR   
+---------- -------------------------------------------------- ---- ----------   
+       CAR         CT         CP         CL                                     
+---------- ---------- ---------- ----------                                     
+         1 BASES DE DATOS                                     GII           3   
+         7          3        1.5        1.5                                     
+                                                                                
+         2 INTELIGENCIA ARTIFICIAL                            GII           3   
+         4        1.5        1.5          3                                     
+                                                                                
+         3 ALMACENES DE DATOS                                 MII           1   
+         7        1.5          0        1.5                                     
+                                                                                
+
+       CAS A                                                  T           CUR   
+---------- -------------------------------------------------- ---- ----------   
+       CAR         CT         CP         CL                                     
+---------- ---------- ---------- ----------                                     
+         4 MINERIA DE DATOS                                   MII           1   
+         7        1.5          0        1.5                                     
+                                                                                
+         5 INFORMATICA BASICA                                 GII           1   
+         7          3        1.5        1.5                                     
+                                                                                
+         6 ALGEBRA                                            GII           1   
+         1          3          3          0                                     
+                                                                                
+
+       CAS A                                                  T           CUR   
+---------- -------------------------------------------------- ---- ----------   
+       CAR         CT         CP         CL                                     
+---------- ---------- ---------- ----------                                     
+         7 CALCULO                                            GII           1   
+         8          3          3          0                                     
+                                                                                
+         8 OPTIMIZACION                                       GII           1   
+         6          3        1.5        1.5                                     
+                                                                                
+         9 GESTION DE RIESGOS                                 GII           3   
+         4          3          0          3                                     
+                                                                                
+
+       CAS A                                                  T           CUR   
+---------- -------------------------------------------------- ---- ----------   
+       CAR         CT         CP         CL                                     
+---------- ---------- ---------- ----------                                     
+        10 ASTRONOMIA                                         GF            2   
+         3          3        1.5        1.5                                     
+                                                                                
+        11 ENSENANZA DE LA MATEMATICA                         GM            2   
+         5          6          0          0                                     
+                                                                                
+        12 ANALISIS COMPLEJO                                  GM            4   
+         2        4.5          3          0                                     
+                                                                                
+
+12 rows selected.
+
+SQL> SELECT A FROM ASIGATURA WHERE CAS IN
+  2  (SELECT CAS FROM PLAN_DOCENTE WHERE DNI IN
+  3  (SELECT DNI FROM PROFESOR WHERE P='DAVID'));
+SELECT A FROM ASIGATURA WHERE CAS IN
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT AR FROM AREA WHERE CD IN
+  2  (SELECT CD FROM DEPARTAMENTO WHERE D='ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION');
+
+no rows selected
+
+SQL> SELECT AR FROM AREA WHERE CD IN
+  2  (SELECT CD FROM DEPARTAMENTO WHERE D='ESTADISTICA E INVESTIGACION OPERATIVA Y COMPUTACION');
+
+no rows selected
+
+SQL> (SELECT CD FROM DEPARTAMENTO WHERE D='ESTADISTICA E INVESTIGACION OPERATIVA, COMPUTACION');
+
+no rows selected
+
+SQL> SELECT AR FROM AREA WHERE CD IN
+  2  (SELECT CD FROM DEPARTAMENTO WHERE D='ESTADISTICA E INVESTIGACION OPERATIVA, COMPUTACION');
+
+no rows selected
+
+SQL> SELECT AR FROM AREA ;
+
+AR                                                                              
+------------------------------------------------------------                    
+ALGEBRA                                                                         
+ANALISIS MATEMATICO                                                             
+ASTRONOMIA Y ASTROFISICA                                                        
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+DIDACTICA DE LA MATEMATICA                                                      
+ESTATISTICA E INVESTIGACION OPERATIVA                                           
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+MATEMATICA APLICADA                                                             
+
+8 rows selected.
+
+SQL> SELECT AR FROM AREA WHERE CD IN
+  2  (SELECT CD FROM DEPARTAMENTO WHERE D='ESTATISTICA E INVESTIGACION OPERATIVA, COMPUTACION');
+
+no rows selected
+
+SQL> SELECT AR FROM AREA WHERE CD IN
+  2  (SELECT CD FROM DEPARTAMENTO WHERE D='ESTATISTICA,INVESTIGACION OPERATIVA Y COMPUTACION');
+
+no rows selected
+
+SQL> SELECT AR FROM AREA WHERE CD IN
+  2  (SELECT CD FROM DEPARTAMENTO WHERE D='ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION');
+
+no rows selected
+
+SQL> SELECT D FROM DEPARTAMENTO
+  2  ;
+
+D                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ASTROFISICA                                                                     
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+MATEMATICA FUNDAMENTAL                                                          
+
+SQL> SELECT AR FROM AREA WHERE CD IN
+  2  (SELECT CD FROM DEPARTAMENTO WHERE D='ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION');
+
+AR                                                                              
+------------------------------------------------------------                    
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+ESTATISTICA E INVESTIGACION OPERATIVA                                           
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CAS IN
+  3  (SELECT CAS FROM PLAN_DOCENTE WHERE FF IS NULL AND DNI IN
+  4  (SELECT DIN FROM PROFESOR WHERE CAT='CU'));
+(SELECT DIN FROM PROFESOR WHERE CAT='CU'))
+        *
+ERROR at line 4:
+ORA-00904: "DIN": invalid identifier 
+
+
+SQL> SELECT A FROM ASIGNATURA
+  2  (SELECT CAS FROM PLAN_DOCENTE WHERE FF IS NULL AND DNI IN
+  3  (SELECT DNI FROM PROFESOR WHERE CAT='CU'));
+(SELECT CAS FROM PLAN_DOCENTE WHERE FF IS NULL AND DNI IN
+ *
+ERROR at line 2:
+ORA-00936: missing expression 
+
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CAS IN
+  3  (SELECT CAS FROM PLAN_DOCENTE WHERE FF IS NULL AND DNI IN
+  4  (SELECT DNI FROM PROFESOR WHERE CAT='CU'));
+
+A                                                                               
+--------------------------------------------------                              
+ALMACENES DE DATOS                                                              
+OPTIMIZACION                                                                    
+
+SQL> SELECT A FROM ASIGNATURA
+  2  HWERE CAS IN
+  3  (SELECT CAS FROM ;
+HWERE CAS IN
+      *
+ERROR at line 2:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CAR IN
+  3  (SELECT CAR PROFESOR WHERE CAT='CU');
+(SELECT CAR PROFESOR WHERE CAT='CU')
+                     *
+ERROR at line 3:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> WHERE CAR IN
+SP2-0734: unknown command beginning "WHERE CAR ..." - rest of line ignored.
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CAR IN
+  3  (SELECT CAR PROFESOR WHERE CAR=NULL AND CAT=CU'');
+(SELECT CAR PROFESOR WHERE CAR=NULL AND CAT=CU'')
+                     *
+ERROR at line 3:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT DISTINCT(A)
+  2  FROM ASIGNATURA,PLAN_DOCENTE,PROFESOR
+  3  WHERE(PLAN_DOCENTE.DNI=PROFESOR.DNI) AND
+  4  (ASIGNATURA.CAS=PLAN_DOCENTE.CAS)AND(CAT='CU');
+
+A                                                                               
+--------------------------------------------------                              
+OPTIMIZACION                                                                    
+ALMACENES DE DATOS                                                              
+
+SQL> 
+SQL> WHERE CAR IN
+SP2-0734: unknown command beginning "WHERE CAR ..." - rest of line ignored.
+SQL> SELECT A FROM ASIGNATURA WHERE CAI IN
+  2  
+SQL> SELECT A FROM ASIGNATURA WHERE CAR IN
+  2  (SELECT CAR FIROM AREA WHERE AR ='LENGUAJES Y SISTEMAS INFORMATICOS' OR 'CIENCIAS DE LA COMPUTACION R INTELIIGENCIA ARTIFICIAL');
+(SELECT CAR FIROM AREA WHERE AR ='LENGUAJES Y SISTEMAS INFORMATICOS' OR 'CIENCIAS DE LA COMPUTACION R INTELIIGENCIA ARTIFICIAL')
+                  *
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAR IN
+  2  (SELECT CAR FIROM AREA WHERE AR ='LENGUAJES Y SISTEMAS INFORMATICOS' OR 'CIENCIAS DE LA COMPUTACION E INTELIIGENCIA ARTIFICIAL');
+(SELECT CAR FIROM AREA WHERE AR ='LENGUAJES Y SISTEMAS INFORMATICOS' OR 'CIENCIAS DE LA COMPUTACION E INTELIIGENCIA ARTIFICIAL')
+                  *
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT AR FROM AREA ;
+
+AR                                                                              
+------------------------------------------------------------                    
+ALGEBRA                                                                         
+ANALISIS MATEMATICO                                                             
+ASTRONOMIA Y ASTROFISICA                                                        
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+DIDACTICA DE LA MATEMATICA                                                      
+ESTATISTICA E INVESTIGACION OPERATIVA                                           
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+MATEMATICA APLICADA                                                             
+
+8 rows selected.
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAR IN
+  2  (SELECT CAR FROM AREA WHERE AR ='LENGUAJES Y SISTEMAS INFORMATICOS' OR 'CIENCIAS DE LA COMPUTACION E INTELIIGENCIA ARTIFICIAL');
+(SELECT CAR FROM AREA WHERE AR ='LENGUAJES Y SISTEMAS INFORMATICOS' OR 'CIENCIAS DE LA COMPUTACION E INTELIIGENCIA ARTIFICIAL')
+                                                                                                                              *
+ERROR at line 2:
+ORA-00920: invalid relational operator 
+
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAR IN
+  2  (SELECT CAR FROM AREA WHERE AR ='LENGUAJES Y SISTEMAS INFORMATICOS'OR'CIENCIAS DE LA COMPUTACION E INTELIIGENCIA ARTIFICIAL');
+(SELECT CAR FROM AREA WHERE AR ='LENGUAJES Y SISTEMAS INFORMATICOS'OR'CIENCIAS DE LA COMPUTACION E INTELIIGENCIA ARTIFICIAL')
+                                                                                                                            *
+ERROR at line 2:
+ORA-00920: invalid relational operator 
+
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAR IN
+  2  (SELECT CAR FROM AREA WHERE AR='LENGUAJES Y SISTEMAS INFORMATICOS'OR'CIENCIAS DE LA COMPUTACION E INTELIIGENCIA ARTIFICIAL');
+(SELECT CAR FROM AREA WHERE AR='LENGUAJES Y SISTEMAS INFORMATICOS'OR'CIENCIAS DE LA COMPUTACION E INTELIIGENCIA ARTIFICIAL')
+                                                                                                                           *
+ERROR at line 2:
+ORA-00920: invalid relational operator 
+
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CAR IN
+  3  (SELECT CAR FROM AREA
+  4  WHERE AR='LENGUAJES Y SISTEMAS INFORMATICOS'OR AR='CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL');
+
+A                                                                               
+--------------------------------------------------                              
+GESTION DE RIESGOS                                                              
+INTELIGENCIA ARTIFICIAL                                                         
+INFORMATICA BASICA                                                              
+MINERIA DE DATOS                                                                
+ALMACENES DE DATOS                                                              
+BASES DE DATOS                                                                  
+
+6 rows selected.
+
+SQL> SELECT P FROM PROFESOR
+  2  WHERE DNI IN
+  3  (SELECT DNI FROM PLAN_DOCENTE
+  4  WHERE FF IS NULL AND CAS IN
+  5  (SELECT CAS FROM ASIGNATURA WHERE T=''GII OR T='MII'));
+(SELECT CAS FROM ASIGNATURA WHERE T=''GII OR T='MII'))
+                                      *
+ERROR at line 5:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT P FROM PROFESOR
+  2  WHERE DNI IN
+  3  (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN
+  4  (SELECT CAS FROM ASIGNATURA WHERE T=''GII OR T='MII'));
+(SELECT CAS FROM ASIGNATURA WHERE T=''GII OR T='MII'))
+                                      *
+ERROR at line 4:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN
+  2  (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN
+  3  (SELECT CAS FROM ASIGNATURA WHERE T='GII' OR T='MII'));
+
+P                                                                               
+------------------------------------------------------------                    
+DAVID                                                                           
+JUAN                                                                            
+SOLEDAD                                                                         
+CARLOS                                                                          
+JOSE MANUEL                                                                     
+PEDRO                                                                           
+MARIA                                                                           
+IVAN                                                                            
+ANGELA                                                                          
+
+9 rows selected.
+
+SQL> SELECT P FROM PROFESOR DNI IN
+  2  (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN
+  3  ((SELECT CAS FROM ASIGNATURA WHERE T='GII')INTERSECT(SELECT CAS FROM ASIGNATURA WHERE T='MII')));
+SELECT P FROM PROFESOR DNI IN
+                           *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT P FROM PROFESOR DNI IN
+  2  (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN
+  3  
+SQL> SELECT P FROM PROFESOR WHERE DNI IN
+  2  (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN
+  3  ((SELECT CAS FROM ASIGNATURA WHERE T='GII')INTERSECT(SELECT CAS FROM ASIGNATURA WHERE T='MII')));
+
+no rows selected
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN
+  2  (SELECT DNI FROM (SELECT DISTINCT DNI FROM PLAN_DOCENTE WHERE SQL> SELECT P FROM PROFESOR DNI IN
+  3    2  (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN
+  4    3
+  5  SQL> SELECT P FROM PROFESOR WHERE DNI IN
+  6    2  (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN
+  7    3  ((SELECT CAS FROM ASIGNATURA WHERE T='GII')INTERSECT(SELECT CAS FROM ASIGNATURA WHERE T='MII')));
+(SELECT DNI FROM (SELECT DISTINCT DNI FROM PLAN_DOCENTE WHERE SQL> SELECT P FROM PROFESOR DNI IN
+                                                                   *
+ERROR at line 2:
+ORA-00936: missing expression 
+
+
+SQL> 
+SQL> no rows selected
+SP2-0734: unknown command beginning "no rows se..." - rest of line ignored.
+SQL> SQL> SELECT P FROM PROFESOR DNI IN
+SP2-0734: unknown command beginning "SQL> SELEC..." - rest of line ignored.
+SQL>   2  (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN
+SQL>   3
+  3*   2  (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN
+SQL> SQL> SELECT P FROM PROFESOR WHERE DNI IN
+SP2-0734: unknown command beginning "SQL> SELEC..." - rest of line ignored.
+SQL>   2  (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN
+SQL>   3  ((SELECT CAS FROM ASIGNATURA WHERE T='GII')INTERSECT(SELECT CAS FROM ASIGNATURA WHERE T='MII')));
+SQL> 
+SQL> no rows selected
+SP2-0734: unknown command beginning "no rows se..." - rest of line ignored.
+SP2-0044: For a list of known commands enter HELP
+and to leave enter EXIT.
+SQL> SELECT P FROM PROFESOR WHERE DNI IN
+  2  (SELECT DNI FROM (SELECT DISTINCT DNI FROM PLAN_DOCENTE MINUS SELECT DISTINCT DNI FROM PLAN_DOCENTE WHERE FF IS NULL));
+
+P                                                                               
+------------------------------------------------------------                    
+CARMEN                                                                          
+
+SQL> SELECT A FROM ASIGANTURA
+  2  WHERE T='GII';
+SELECT A FROM ASIGANTURA
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE T='GII';
+
+A                                                                               
+--------------------------------------------------                              
+BASES DE DATOS                                                                  
+INTELIGENCIA ARTIFICIAL                                                         
+INFORMATICA BASICA                                                              
+ALGEBRA                                                                         
+CALCULO                                                                         
+OPTIMIZACION                                                                    
+GESTION DE RIESGOS                                                              
+
+7 rows selected.
+
+SQL> SELECT AR A
+  2  
+SQL> SELECT AR,A
+  2  FROM ASIGNATURA,AREA
+  3  WHERE ASIGNATURA.CAR=AREA.CAR;
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+ALGEBRA                                                                         
+ALGEBRA                                                                         
+                                                                                
+ANALISIS MATEMATICO                                                             
+ANALISIS COMPLEJO                                                               
+                                                                                
+ASTRONOMIA Y ASTROFISICA                                                        
+ASTRONOMIA                                                                      
+                                                                                
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+GESTION DE RIESGOS                                                              
+                                                                                
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+INTELIGENCIA ARTIFICIAL                                                         
+                                                                                
+DIDACTICA DE LA MATEMATICA                                                      
+ENSENANZA DE LA MATEMATICA                                                      
+                                                                                
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+ESTATISTICA E INVESTIGACION OPERATIVA                                           
+OPTIMIZACION                                                                    
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+INFORMATICA BASICA                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+MINERIA DE DATOS                                                                
+                                                                                
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+ALMACENES DE DATOS                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+BASES DE DATOS                                                                  
+                                                                                
+MATEMATICA APLICADA                                                             
+CALCULO                                                                         
+                                                                                
+
+12 rows selected.
+
+SQL> SELECT D,AR
+  2  FROM DEPARTAMENTO,AREA
+  3  WHERE DEPARTAMENTO.CD=AREA.CD
+  4  ORDER BYD,AR;
+ORDER BYD,AR
+      *
+ERROR at line 4:
+ORA-00924: missing BY keyword 
+
+
+SQL> SELECT D,AR
+  2  FROM DEPARTAMENTO,AREA
+  3  WHERE DEPARTAMENTO.CD=AREA.CD
+  4  ORDER BY D,AR;
+
+D                                                                               
+------------------------------------------------------------                    
+AR                                                                              
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+                                                                                
+ANALISIS MATEMATICO                                                             
+DIDACTICA DE LA MATEMATICA                                                      
+                                                                                
+ANALISIS MATEMATICO                                                             
+MATEMATICA APLICADA                                                             
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+AR                                                                              
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ASTRONOMIA Y ASTROFISICA                                                        
+                                                                                
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+                                                                                
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICA E INVESTIGACION OPERATIVA                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+AR                                                                              
+------------------------------------------------------------                    
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+ALGEBRA                                                                         
+                                                                                
+
+8 rows selected.
+
+SQL> SELECT D,P
+  2  FROM DEPARTAMENTO,AREA,PROFESOR
+  3  WHERE DEPARTAMENTO.CD=AREA.CD AND AREA.CAR=PROFESOR.CAR
+  4  ORDER BY D,P;
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANGELA                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+FRANCISCO                                                                       
+                                                                                
+ANALISIS MATEMATICO                                                             
+MARIO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+CARMEN                                                                          
+                                                                                
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+CARLOS                                                                          
+                                                                                
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+DAVID                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+JOSE MANUEL                                                                     
+                                                                                
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+JUAN                                                                            
+                                                                                
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+MARIA                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+PEDRO                                                                           
+                                                                                
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+SOLEDAD                                                                         
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+IVAN                                                                            
+                                                                                
+
+12 rows selected.
+
+SQL> COMMIT WORK +
+  2  
+SQL> COMMIT WORK ;
+
+Commit complete.
+
+SQL> SPOOL OFF
