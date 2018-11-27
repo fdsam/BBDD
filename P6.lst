@@ -1,0 +1,1112 @@
+SQL> SELECT SYSDATE FROM DUAL;
+
+SYSDATE                                                                         
+---------                                                                       
+27-NOV-18                                                                       
+
+SQL> SELECT TO_CHAR(SYSDATE, 'HH:MI:SS')FROM DUAL;
+
+TO_CHAR(                                                                        
+--------                                                                        
+10:31:36                                                                        
+
+SQL> 
+SQL> SELECT TO_CHAR(SYSDATE, 'DAY:DD:MON')FROM DUAL;
+
+TO_CHAR(SYSDATE,'DAY:DD:MON')                                                   
+----------------------------------------------------                            
+TUESDAY  :27:NOV                                                                
+
+SQL> TO_CHAR(SYSDATE,'DAY:DD:MON')FROM DUAL;
+SP2-0734: unknown command beginning "TO_CHAR(SY..." - rest of line ignored.
+SQL> SELECT TO_CHAR(SYSDATE, 'DAY:DD:MON')FROM DUAL;
+
+TO_CHAR(SYSDATE,'DAY:DD:MON')                                                   
+----------------------------------------------------                            
+TUESDAY  :27:NOV                                                                
+
+SQL> 
+SQL> SELECT TO_CHAR(SYSDATE, 'HH:MI:SS')FROM DUAL;
+
+TO_CHAR(                                                                        
+--------                                                                        
+10:34:54                                                                        
+
+SQL> 
+SQL> WHERE DNI=8888 AND CAS=11;
+SP2-0734: unknown command beginning "WHERE DNI=..." - rest of line ignored.
+SQL> SELECT (SELECT SYSDATE FROM DUAL) - FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11;
+
+(SELECTSYSDATEFROMDUAL)-FI                                                      
+--------------------------                                                      
+                3374.44225                                                      
+
+SQL> SELECT P FROM PROFESOR
+  2  WHERE DNI IN
+  3  (SELECT DNI FROM PLAN_DOCENTE WHERE FI-FF >=365);
+
+no rows selected
+
+SQL> SELECT P FROM PROFESOR
+  2  WHERE DNI IN
+  3  (SELECT DNI FROM PLAN_DOCENTE WHERE FF-FI >=365);
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+CARLOS                                                                          
+MARIA                                                                           
+CARMEN                                                                          
+DAVID                                                                           
+
+SQL> SELECT COUNT(P) FROM PROFESOR WHERE CAR IN
+  2  (SELECT CAR FROM AREA WHERE CD=(SELECT CD FROM DEPARTAMENTO WHERE D='ASTROFISICA'));
+
+  COUNT(P)                                                                      
+----------                                                                      
+         1                                                                      
+
+SQL> SELECT D, COUNT(DNI)
+  2  FROM DEPARTAMENTO,PROFESOR,AREA
+  3  WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR=AREA.CAR)
+  4  ;
+SELECT D, COUNT(DNI)
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> SELECT D, COUNT(DNI)
+  2  WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR=AREA.CAR)
+  3  GROUP BY D ORDER BY D;
+WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR=AREA.CAR)
+*
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT D, COUNT(DNI)
+  2  FROM DEPARTAMENTO DE,PROFESOR PR,AREA ARE
+  3  WHERE (DE.CD=ARE.CD AND PR.CAR=ARE.CAR)
+  4  GROUP BY D
+  5  ORDER BY D DESC;
+
+D                                                            COUNT(DNI)         
+------------------------------------------------------------ ----------         
+MATEMATICA FUNDAMENTAL                                                1         
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                    7         
+ASTROFISICA                                                           1         
+ANALISIS MATEMATICO                                                   3         
+
+SQL> SELECT COUNT(T)
+  2  FROM AIGNATURA ASIG,AREA ARE,DEPARTAMENTO DEP
+  3  WHERE ASIG.CAR=ARE.CAR AND DEO.CD=ARE.CD AND
+  4  D LIKE 'ESTATISTICA,INVESTIGACION OPERATIVA Y COMPUTACION';
+FROM AIGNATURA ASIG,AREA ARE,DEPARTAMENTO DEP
+     *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT D FROM DEPARTAMENTO
+  2  ;+
+  3  
+SQL> SELECT D FROM DEPARTAMENTO
+  2  ;
+
+D                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ASTROFISICA                                                                     
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+MATEMATICA FUNDAMENTAL                                                          
+
+SQL> SELECT COUNT(T)
+  2  FROM AIGNATURA ASIG,AREA ARE,DEPARTAMENTO DEP
+  3  WHERE ASIG.CAR=ARE.CAR AND DEO.CD=ARE.CD AND
+  4  D LIKE 'ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION';
+FROM AIGNATURA ASIG,AREA ARE,DEPARTAMENTO DEP
+     *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT COUNT(T)
+  2  FROM ASIGNATURA ASIG,AREA ARE,DEPARTAMENTO DEP
+  3  WHERE ASIG.CAR=ARE.CAR AND DEO.CD=ARE.CD AND
+  4  D LIKE 'ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION';
+WHERE ASIG.CAR=ARE.CAR AND DEO.CD=ARE.CD AND
+                           *
+ERROR at line 3:
+ORA-00904: "DEO"."CD": invalid identifier 
+
+
+SQL> SELECT COUNT(T)
+  2  FROM ASIGNATURA ASIG,AREA ARE,DEPARTAMENTO DEP
+  3  WHERE ASIG.CAR=ARE.CAR AND DEP.CD=ARE.CD AND
+  4  D LIKE 'ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION';
+
+  COUNT(T)                                                                      
+----------                                                                      
+         7                                                                      
+
+SQL> 
+SQL> FROM ;
+SP2-0042: unknown command "FROM " - rest of line ignored.
+SQL> SELECT COUNT(P)
+  2  FROM PROFESOR PROFE,AREA ARE
+  3  WHERE PROFE.CAR=ARE.CAR AND
+  4  ARE LIKE 'A%';
+ARE LIKE 'A%'
+*
+ERROR at line 4:
+ORA-00904: "ARE": invalid identifier 
+
+
+SQL> SELECT COUNT(P)
+  2  WHERE PROFE.CAR=ARE.CAR AND
+  3  WHERE PROFE.CAR=ARE.CAR AND
+  4  AR LIKE 'A%';
+WHERE PROFE.CAR=ARE.CAR AND
+*
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT COUNT(P)
+  2  FROM PROFESOR PROFE,AREA ARE
+  3  WHERE PROFE.CAR=ARE.CAR AND
+  4  AR LIKE 'A%';
+
+  COUNT(P)                                                                      
+----------                                                                      
+         3                                                                      
+
+SQL> SELECT T,COUNT(A)
+  2  FROM ASIGNATURA
+  3  GROUP BY T ORDER BY T ASC;
+
+T      COUNT(A)                                                                 
+---- ----------                                                                 
+GF            1                                                                 
+GII           7                                                                 
+GM            2                                                                 
+MII           2                                                                 
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CT IN(SELECT MIN(CT)FROM ASIGNATURA);
+
+A                                                                               
+--------------------------------------------------                              
+INTELIGENCIA ARTIFICIAL                                                         
+ALMACENES DE DATOS                                                              
+MINERIA DE DATOS                                                                
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CT IN(SELECT MAX(CT)FROM ASIGNATURA);
+
+A                                                                               
+--------------------------------------------------                              
+ENSENANZA DE LA MATEMATICA                                                      
+
+SQL> SELECT A,CT+CP+CL
+  2  FROM ASIGNATURA;
+
+A                                                    CT+CP+CL                   
+-------------------------------------------------- ----------                   
+BASES DE DATOS                                              6                   
+INTELIGENCIA ARTIFICIAL                                     6                   
+ALMACENES DE DATOS                                          3                   
+MINERIA DE DATOS                                            3                   
+INFORMATICA BASICA                                          6                   
+ALGEBRA                                                     6                   
+CALCULO                                                     6                   
+OPTIMIZACION                                                6                   
+GESTION DE RIESGOS                                          6                   
+ASTRONOMIA                                                  6                   
+ENSENANZA DE LA MATEMATICA                                  6                   
+
+A                                                    CT+CP+CL                   
+-------------------------------------------------- ----------                   
+ANALISIS COMPLEJO                                         7.5                   
+
+12 rows selected.
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CT+CP+CL (SELECT MAX(CT+CP+CL)FROM ASIGNATURA);
+WHERE CT+CP+CL (SELECT MAX(CT+CP+CL)FROM ASIGNATURA)
+                *
+ERROR at line 2:
+ORA-00936: missing expression 
+
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CT+CP+CL IN(SELECT MAX(CT+CP+CL)FROM ASIGNATURA);
+
+A                                                                               
+--------------------------------------------------                              
+ANALISIS COMPLEJO                                                               
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CT+CP+CL IN(SELECT MIN(CT+CP+CL)FROM ASIGNATURA);
+
+A                                                                               
+--------------------------------------------------                              
+ALMACENES DE DATOS                                                              
+MINERIA DE DATOS                                                                
+
+SQL> SELECT AR FROM AREA
+  2  WHERE AR IN
+  3  ;
+
+*
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> SELECT AR FROM AREA AR,ASIGNATURA ASIG
+  2  WHERE ARE.CAR=ASIG.CAR
+  3  AND CP+CL+CT IN (SELECT MAX(CP+CL+CP) FROM ASIGNATURA);
+WHERE ARE.CAR=ASIG.CAR
+      *
+ERROR at line 2:
+ORA-00904: "ARE"."CAR": invalid identifier 
+
+
+SQL> SELECT AR FROM AREA ARE,ASIGNATURA ASIG
+  2  WHERE ARE.CAR=ASIG.CAR
+  3  AND CP+CL+CT IN (SELECT MAX(CP+CL+CP) FROM ASIGNATURA);
+
+AR                                                                              
+------------------------------------------------------------                    
+ALGEBRA                                                                         
+ASTRONOMIA Y ASTROFISICA                                                        
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+DIDACTICA DE LA MATEMATICA                                                      
+ESTATISTICA E INVESTIGACION OPERATIVA                                           
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+MATEMATICA APLICADA                                                             
+
+9 rows selected.
+
+SQL> SELECT AR
+  2  FROM AREA ARE,ASIGNATURA ASIG
+  3  WHERE ARE.CAR=ASIG.CAR AND CP+CL+CT IN(SELECT MAX(CP+CL+CT)FROM ASIGNATURA);
+
+AR                                                                              
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+
+SQL> SELECT COUNT(DISTINC A)
+  2  FROM ASIGNATURA ASIG,PLAN_DOCENTE PD
+  3  WHERE ASIG.CAS=PD.CAS AND DNI=1111;
+SELECT COUNT(DISTINC A)
+                     *
+ERROR at line 1:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT COUNT(DISTINC A)
+  2  FROM ASIGNATURA ASIG,PLAN_DOCENTE PD
+  3  WHERE ASIG.CAS=PD.CAS AND DNI=1111;
+SELECT COUNT(DISTINC A)
+                     *
+ERROR at line 1:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT COUNT(A)
+  2  FROM ASIGNATURA ASIG,PLAN_DOCENTE PD
+  3  WHERE ASIG.CAS=PD.CAS AND DNI=1111;
+
+  COUNT(A)                                                                      
+----------                                                                      
+         2                                                                      
+
+SQL> SELECT COUNT(DISTINC A)
+  2  FROM ASIGNATURA ASIG,PLAN_DOCENTE PD
+  3  WHERE ASIG.CAS=PD.CAS AND DNI=1111;
+SELECT COUNT(DISTINC A)
+                     *
+ERROR at line 1:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT SUM(CTA+CPA+CLA)
+  2  FROM PLAN_DOCENTE
+  3  WHERE DNI=1111;
+
+SUM(CTA+CPA+CLA)                                                                
+----------------                                                                
+               9                                                                
+
+SQL> SELECT P FROM PROFESOR
+  2  WHERE DNI IN(SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL
+  3  AND (CTA+CPA+CLA) =(SELECT MAX(CTA+CPA+CLA)FROM PLAN_DOCNETE));
+AND (CTA+CPA+CLA) =(SELECT MAX(CTA+CPA+CLA)FROM PLAN_DOCNETE))
+                                                *
+ERROR at line 3:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT P FROM PROFESOR
+  2  WHERE DNI IN
+  3  (SELECT DNI FROM PLAN_DOCENTE
+  4  WHERE FF IS NULL AND (CTA+CPA+CLA)=(SELECT MAX(CTA+CPA+CLA)
+  5  FROM PLAN_DOCENTE));
+
+P                                                                               
+------------------------------------------------------------                    
+MARIO                                                                           
+
+SQL> SELECT AVG(COUNT(A))NUM_M
+  2  FROM ASIGNATURA
+  3  GROUP BY CAR;
+
+     NUM_M                                                                      
+----------                                                                      
+       1.5                                                                      
+
+SQL> SELECT AVG(COUNT(P))N_MEDIO_PROFE
+  2  FROM PROFESOR PROFE,AREA ARE
+  3  WHERE PROFE.CAR=AREA.CAR
+  4  GROUP BY CD;
+WHERE PROFE.CAR=AREA.CAR
+                *
+ERROR at line 3:
+ORA-06553: PLS-306: wrong number or types of arguments in call to 'OGC_AREA' 
+
+
+SQL> 
+SQL> SELECT AVG(COUNT(P))N_MEDIO_PROFE
+  2  FROM PROFESOR PROFE,AREA ARE
+  3  WHERE PROFE.CAR=AREA.CAR
+  4  GROUP BY CD;
+WHERE PROFE.CAR=AREA.CAR
+                *
+ERROR at line 3:
+ORA-06553: PLS-306: wrong number or types of arguments in call to 'OGC_AREA' 
+
+
+SQL> SLECT * FROM AREA
+SP2-0734: unknown command beginning "SLECT * FR..." - rest of line ignored.
+SQL> SELECT * FROM AREA
+  2  ;
+
+       CAR AR                                                                   
+---------- ------------------------------------------------------------         
+        CD                                                                      
+----------                                                                      
+         1 ALGEBRA                                                              
+         4                                                                      
+                                                                                
+         2 ANALISIS MATEMATICO                                                  
+         1                                                                      
+                                                                                
+         3 ASTRONOMIA Y ASTROFISICA                                             
+         2                                                                      
+                                                                                
+
+       CAR AR                                                                   
+---------- ------------------------------------------------------------         
+        CD                                                                      
+----------                                                                      
+         4 CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                 
+         3                                                                      
+                                                                                
+         5 DIDACTICA DE LA MATEMATICA                                           
+         1                                                                      
+                                                                                
+         6 ESTATISTICA E INVESTIGACION OPERATIVA                                
+         3                                                                      
+                                                                                
+
+       CAR AR                                                                   
+---------- ------------------------------------------------------------         
+        CD                                                                      
+----------                                                                      
+         7 LENGUAJES Y SISTEMAS INFORMATICOS                                    
+         3                                                                      
+                                                                                
+         8 MATEMATICA APLICADA                                                  
+         1                                                                      
+                                                                                
+
+8 rows selected.
+
+SQL> SELECT AVG(COUNT(P))NUM_PROFE
+  2  FROM PROFESOR PRO,AREA ARE
+  3  WHERE PRO.CAR=ARE.CAR
+  4  GROUP`BY CD;
+GROUP`BY CD
+     *
+ERROR at line 4:
+ORA-00911: invalid character 
+
+
+SQL> SELECT AVG(COUNT(P))NUM_PROFE
+  2  FROM PROFESOR PRO,AREA ARE
+  3  WHERE PRO.CAR=ARE.CAR
+  4  GROUP BY CD;
+
+ NUM_PROFE                                                                      
+----------                                                                      
+         3                                                                      
+
+SQL> SELECT AR FROM AREA
+  2  WHERE CAR IN(SELECT CAR FROM ASIGNATURA )
+  3  ;
+
+AR                                                                              
+------------------------------------------------------------                    
+ALGEBRA                                                                         
+ANALISIS MATEMATICO                                                             
+ASTRONOMIA Y ASTROFISICA                                                        
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+DIDACTICA DE LA MATEMATICA                                                      
+ESTATISTICA E INVESTIGACION OPERATIVA                                           
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+MATEMATICA APLICADA                                                             
+
+8 rows selected.
+
+SQL> SELECT AR FROM AREA
+  2  WHERE CAR IN(SELECT CAR FROM ASIGNATURA
+  3  HAVING COUNT(CAR>=3);
+HAVING COUNT(CAR>=3)
+                *
+ERROR at line 3:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT AR FROM AREA
+  2  WHERE CAR IN(SELECT CAR FROM ASIGNATURA
+  3  HAVING COUNT(CAR)>=3);
+WHERE CAR IN(SELECT CAR FROM ASIGNATURA
+                    *
+ERROR at line 2:
+ORA-00937: not a single-group group function 
+
+
+SQL> SELECT AR FROM AREA
+  2  WHERE CAR IN(SELECT CAR FROM ASIGNATURA
+  3  GROUP BY CAR
+  4  HAVING COUNT(CAR)>=3);
+
+AR                                                                              
+------------------------------------------------------------                    
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+
+SQL> SELECT AR FROM AREA
+  2  WHERE CAR IN(SELECT CAR FROM ASIGNATURA
+  3  GROUP BY CAR
+  4  HAVING COUNT(CAR)>=6);
+
+no rows selected
+
+SQL> SELECT D FROM DEPARTAMENTO
+  2  ;
+
+D                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ASTROFISICA                                                                     
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+MATEMATICA FUNDAMENTAL                                                          
+
+SQL> SELECT D FROM DEPARTAMENTO,AREA,PROFEAOR
+  2  WHERE AREA.CD=DEPARTAMENTO=CD AND AREA.CAR=PROFESOR.CAR
+  3  HAVINF COUNT (DNI)=SELECT MIN(COUNT(DNI));
+WHERE AREA.CD=DEPARTAMENTO=CD AND AREA.CAR=PROFESOR.CAR
+                          *
+ERROR at line 2:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT D FROM DEPARTAMENTO,AREA,PROFEAOR
+  2  ;
+SELECT D FROM DEPARTAMENTO,AREA,PROFEAOR
+                                *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT D FROM DEPARTAMENTO,AREA,PROFESOR;
+
+D                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+
+D                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+
+D                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+
+D                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+
+D                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+
+D                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+
+D                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+
+D                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+
+D                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+
+D                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+
+D                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+
+D                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+
+D                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+
+D                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+
+D                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+
+D                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+
+D                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+
+D                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ASTROFISICA                                                                     
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+
+D                                                                               
+------------------------------------------------------------                    
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+
+D                                                                               
+------------------------------------------------------------                    
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+
+D                                                                               
+------------------------------------------------------------                    
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+
+D                                                                               
+------------------------------------------------------------                    
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+
+D                                                                               
+------------------------------------------------------------                    
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+
+D                                                                               
+------------------------------------------------------------                    
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+
+D                                                                               
+------------------------------------------------------------                    
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+
+D                                                                               
+------------------------------------------------------------                    
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+
+D                                                                               
+------------------------------------------------------------                    
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+ESTATISTICAS,INVESTIGACION OPERATIVA Y COMPUTACION                              
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+
+D                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+
+D                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+
+D                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+
+D                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+
+D                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+
+D                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+
+D                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+
+D                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+MATEMATICA FUNDAMENTAL                                                          
+
+384 rows selected.
+
+SQL> SELECT D FROM DEPARTAMENTO,AREA,PROFESOR
+  2  WHERE AREA.CD=DEPARTAMENTO=CD AND AREA.CAR=PROFESOR.CAR
+  3  HAVINF COUNT (DNI)=SELECT MIN(COUNT(DNI))
+  4  FROM AREA,DEPARTAMENTO,PROFESOR;
+WHERE AREA.CD=DEPARTAMENTO=CD AND AREA.CAR=PROFESOR.CAR
+                          *
+ERROR at line 2:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT D FROM DEPARTAMENTO,AREA,PROFESOR
+  2  WHERE AREA.CD=DEPARTAMENTO=CD AND AREA.CAR=PROFESOR.CAR
+  3  GRROUP BY D
+  4  HAVINF COUNT(DNI)=SELECT MIN(COUNT(DNI))
+  5  FROM AREA,DEPARTAMENTO,PROFESOR
+  6  WHERE
+  7  (AREA.CD=DEPARTAMENTO.CD)AND(AREA.CAR=PROFESOR.CAR)
+  8  GROUP BY D;
+WHERE AREA.CD=DEPARTAMENTO=CD AND AREA.CAR=PROFESOR.CAR
+                          *
+ERROR at line 2:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT D FROM DEPARTAMENTO,AREA,PROFESOR
+  2  FROM AREA ARE,DEPARTAMENTO DEP ,PROFESOR PRO
+  3  WHERE ARE.CD=DEP.CD AND ARE.CAR=PRO.CAR
+  4  GROUP BY D
+  5  HAVINF COUNT(DNI)=SELECT MIN(COUNT(DNI))
+  6  FROM AREA,DEPARTAMENTO,PROFESOR
+  7  WHERE(ARE.CD=DEP.CD) AND (ARE.CAR=PRO.CAR)
+  8  GROUP BY D;
+FROM AREA ARE,DEPARTAMENTO DEP ,PROFESOR PRO
+*
+ERROR at line 2:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT D FROM DEPARTAMENTO,AREA,PROFESOR
+  2  WHERE AREA.CD=DEPARTAMENTO.CD AND AREA.CAR=PROFESOR.CAR
+  3  GROUP BY D
+  4  HAVINF COUNT(DNI)=SELECT MIN(COUNT(DNI))
+  5  FROM AREA,DEPARTAMENTO,PROFESOR
+  6  WHERE (AREA.CD=DEPARTAMENTO.CD)AND(AREA.CAR=PROFESOR.CAR)
+  7  GROUP BY D;
+HAVINF COUNT(DNI)=SELECT MIN(COUNT(DNI))
+*
+ERROR at line 4:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT D FROM DEPARTAMENTO,AREA,PROFESOR
+  2  WHERE AREA.CD=DEPARTAMENTO.CD AND AREA.CAR=PROFESOR.CAR
+  3  GROUP BY D
+  4  HAVING COUNT(DNI)=SELECT MIN(COUNT(DNI))
+  5  FROM AREA,DEPARTAMENTO,PROFESOR
+  6  WHERE (AREA.CD=DEPARTAMENTO.CD)AND(AREA.CAR=PROFESOR.CAR)
+  7  GROUP BY D;
+HAVING COUNT(DNI)=SELECT MIN(COUNT(DNI))
+                  *
+ERROR at line 4:
+ORA-00936: missing expression 
+
+
+SQL> SELECT D
+  2  FROM DEPARTAMENTO,AREA,PROFESOR
+  3  WHERE PROFESOR.CAR=AREA.CAR AND AREA.CD= DEPARTAMENTO.CD
+  4  GROUP BY D
+  5  HAVING COUNT(DNI)=(SELECT MIN(COUNT(DNI))
+  6  FROM DEPARTAMENTO,AREA,PROFESOR
+  7  WHERE PROFESOR.CAR=AREA.CAR AND AREA.CD=DEPARTAMENTO.CD
+  8  GROUP BY D);
+
+D                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+MATEMATICA FUNDAMENTAL                                                          
+
+SQL> COMMIT WORK
+  2  ;
+
+Commit complete.
+
+SQL> SPOOL OFF
