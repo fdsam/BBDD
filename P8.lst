@@ -1,0 +1,43 @@
+SQL> CREATE TABLE TITULACION
+  2  (T CHAR(4)PRIMARY KEY,
+  3  FAC VARCHAR2(40));
+
+Table created.
+
+SQL> INSERT INO TITULACION(T)
+  2  SELECT DISTINCT(T)
+  3  FROM ASIGNATURA;
+INSERT INO TITULACION(T)
+       *
+ERROR at line 1:
+ORA-00925: missing INTO keyword 
+
+
+SQL> INSERT INTO TITULACION(T)
+  2  SELECT DISTINCT(T)
+  3  FROM ASIGNATURA;
+
+4 rows created.
+
+SQL> SELECT * FROM TITULACION
+  2  ;
+
+T    FAC                                                                        
+---- ----------------------------------------                                   
+GF                                                                              
+GM                                                                              
+GII                                                                             
+MII                                                                             
+
+SQL> UPDATE TITULACION
+  2  SET FAC='FACULTAD  MATEMATICA'
+  3  
+SQL> COMMI WORK
+SP2-0042: unknown command "COMMI WORK" - rest of line ignored.
+SQL> 
+SQL> COMMIT WORK
+  2  ;
+
+Commit complete.
+
+SQL> SPOOL OFF
