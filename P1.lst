@@ -1,0 +1,143 @@
+SQL> DISCONNECT
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production
+SQL> 
+SQL> exit
+SQL> LIST
+SP2-0223: No lines in SQL buffer.
+SQL> LIST LAST
+SP2-0223: No lines in SQL buffer.
+SQL> INPUT FROM AREA
+SQL> INPUT FROM AREA;
+SQL> 
+SQL> CHANGE /FROM PLA_DOCENTE/FROM AREA
+SP2-0023: String not found.
+SQL> DEL LAST
+SQL> DEL
+SQL> SAVE p1.txt APPEND
+SP2-0107: Nothing to save.
+SQL> G P1 LIST
+SP2-0042: unknown command "G P1 LIST" - rest of line ignored.
+SQL> GET P1 LIST
+SP2-0160: unable to open "P1.sql"
+SQL> RUN
+SP2-0103: Nothing in SQL buffer to run.
+SQL> EDIT p1
+
+SQL> SQL REM X
+SP2-0042: unknown command "SQL REM X" - rest of line ignored.
+SQL> SQL REM texto
+SP2-0734: unknown command beginning "SQL REM te..." - rest of line ignored.
+SQL> REM T
+SQL> START p1
+SP2-0310: unable to open file "p1.sql"
+SQL> SHOW AREA
+SP2-0158: unknown SHOW option "AREA"
+SQL> SHOW AREA;
+SP2-0158: unknown SHOW option "AREA"
+SQL> SET LINESIZE 10;
+SQL> SET LINESIZE 20;
+SQL> HELP SELECT
+SP2-0172: No HELP matching this topic was found.
+SQL> SELECT * FROM AREA
+  2  ;
+
+       CAR          
+----------          
+AR                  
+--------------------
+        CD          
+----------          
+         1          
+ALGEBRA             
+         4          
+                    
+         2          
+ANALISIS MATEMATICO 
+         1          
+
+       CAR          
+----------          
+AR                  
+--------------------
+        CD          
+----------          
+                    
+         3          
+ASTRONOMIA Y ASTROFI
+SICA                
+         2          
+                    
+         4          
+
+       CAR          
+----------          
+AR                  
+--------------------
+        CD          
+----------          
+CIENCIAS DE LA COMPU
+TACION E INTELIGENCI
+A ARTIFICIAL        
+         3          
+                    
+         5          
+DIDACTICA DE LA MATE
+
+       CAR          
+----------          
+AR                  
+--------------------
+        CD          
+----------          
+MATICA              
+         1          
+                    
+         6          
+ESTATISTICA E INVEST
+IGACION OPERATIVA   
+         3          
+
+       CAR          
+----------          
+AR                  
+--------------------
+        CD          
+----------          
+                    
+         7          
+LENGUAJES Y SISTEMAS
+ INFORMATICOS       
+         3          
+                    
+         8          
+
+       CAR          
+----------          
+AR                  
+--------------------
+        CD          
+----------          
+MATEMATICA APLICADA 
+         1          
+                    
+
+8 rows selected.
+
+SQL> HOST ls
+
+SQL> DEFINE VAR = 'HOLA';
+SQL> UNDEFINE VAR;
+SQL> VARIABLE va CHAR
+SQL> PRINT VAR
+SP2-0552: Bind variable "VAR" not declared.
+SQL> PAUSE HOLA;
+HOLA
+
+SQL> TTITLE CENTER 'Tabla';
+SQL> PROMPT
+
+SQL> PROMPT TTITLE CENTER 'TABLE';
+TTITLE CENTER 'TABLE'
+SQL> PROMPT BTITLE CENTER 'TABLE';
+BTITLE CENTER 'TABLE'
+SQL> SPOOL OFF
